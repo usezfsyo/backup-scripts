@@ -3,18 +3,19 @@
 # Really, really need to replace some paths with variables instead. This really isn't going to work, I have to set multiple excludes and haven't looked up how to do this in bash yet. I'll probably have to just rewrite this in Python.
 
 # The gpg pubkey of the target has to be imported and trusted before this works.
-gpgkey=
+gpgKey=
+# Can use the --exclude-from 'file.txt'. Make sure to exclude snapshot directory.
 excludes=
-snapsource=/
-snap=/snapshot/
-tarincr=/var/log/backup.snap
-backups=
+snapSource=
+snap=
+tarIncr=/var/log/backup.snap
+backupDest=
 
 now=$(date +"%m-%d-%Y"@"%H:%M")
 
 # Here is the snapshot part of the backup:
 echo "[*] Performing snapshot"
-rsync -ah --delete --exclude $excludes $snapsource $snap
+rsync -ah --delete --exclude-from '$excludes' $snapSource $snap
 
 # And now for the incremental tar portion:
 echo "[*] Creating backup file for $now"
@@ -23,9 +24,9 @@ echo "[*] Creating backup file for $now"
 today=$(date +"%a")
 if [ $today == Sun ]
 then
-rm -rf $tarincr && cd $snap && tar -g $tarincr -cpzf - . | gpg -e --cipher-algo AES256 -o $backups/backup-$now-full.tgz.gpg -r $gpgkey -
+rm -rf $tarIncr && cd $snap && tar -g $tarIncr -cpzf - . | gpg -e --cipher-algo AES256 -o $backups/backup-$now-full.tgz.gpg -r $gpgKey -
 else
-cd $snap && tar -g $tarincr -cpzf - . | gpg -e --cipher-algo AES256 -o $backups/backup-$now-inc.tgz.gpg -r $gpgkey -
+cd $snap && tar -g $tarIncr -cpzf - . | gpg -e --cipher-algo AES256 -o $backups/backup-$now-inc.tgz.gpg -r $gpgKey -
 fi
 
 echo "[*] Completed backup for $now."
