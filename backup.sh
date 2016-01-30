@@ -15,7 +15,7 @@ now=$(date +"%m-%d-%Y"@"%H:%M")
 
 # Here is the snapshot part of the backup:
 echo "[*] Performing snapshot"
-rsync -ah --delete --exclude-from '$excludes' $snapSource $snap
+rsync -ah --delete --exclude-from=$excludes $snapSource $snap
 
 # And now for the incremental tar portion:
 echo "[*] Creating backup file for $now"
