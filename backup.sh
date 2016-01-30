@@ -24,9 +24,9 @@ echo "[*] Creating backup file for $now"
 today=$(date +"%a")
 if [ $today == Sun ]
 then
-rm -rf $tarIncr && cd $snap && tar -g $tarIncr -cpzf - . | gpg -e --cipher-algo AES256 -o $backups/backup-$now-full.tgz.gpg -r $gpgKey -
+rm -rf $tarIncr && cd $snap && tar -g $tarIncr -cpzf - . | gpg -e --cipher-algo AES256 -o $backupDest/backup-$now-full.tgz.gpg -r $gpgKey -
 else
-cd $snap && tar -g $tarIncr -cpzf - . | gpg -e --cipher-algo AES256 -o $backups/backup-$now-inc.tgz.gpg -r $gpgKey -
+cd $snap && tar -g $tarIncr -cpzf - . | gpg -e --cipher-algo AES256 -o $backupDest/backup-$now-inc.tgz.gpg -r $gpgKey -
 fi
 
 echo "[*] Completed backup for $now."
