@@ -36,6 +36,6 @@ echo "[*] Completed backup for $now."
 if [ $today == Sun ]
 then
 echo "[*] It's cleanup time, bitches."
-find $backups -mtime +2 -name '*full*' -print | xargs rm
-find $backups -name '*inc*' -print | xargs rm
+find $backupDest -mtime +2 -name '*full*' -print | xargs rm
+find $backupDest -name '*inc*' -print | xargs rm
 fi
